@@ -111,6 +111,7 @@ spec:
           groupId: ${{ parameters.groupId }}
           artifactId: ${{ parameters.artifactId }}
           javaPackageName: ${{ parameters.javaPackageName }}
+          currentUser: ${{ user.entity.metadata.name }}
           owner: user:default/${{ user.entity.metadata.name }}
           cluster: ${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           gitlabHost: gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
@@ -118,7 +119,7 @@ spec:
           destination: ${{ parameters.repoOwner }}/${{ parameters.name }}
           quayDestination: ${{ parameters.imageOrganization}}/${{ parameters.name }}
           port: 8080
-          # verify_commits: ${{ parameters.repo.verify_commits }}
+          verifyCommits: ${{ parameters.repoVerifyCommits }}
 
     - id: publish-gitlab-source
       name: Publish

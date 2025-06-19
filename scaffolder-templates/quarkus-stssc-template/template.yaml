@@ -111,8 +111,8 @@ spec:
           groupId: ${{ parameters.groupId }}
           artifactId: ${{ parameters.artifactId }}
           javaPackageName: ${{ parameters.javaPackageName }}
-          currentUser: ${{ user.entity.metadata.name }}
           owner: user:default/${{ user.entity.metadata.name }}
+          ownerEmail: ${{ user.entity.spec.profile.email }}
           cluster: ${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           gitlabHost: gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           quayHost: tssc-quay-quay-tssc-quay.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}

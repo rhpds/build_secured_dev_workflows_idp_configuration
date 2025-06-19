@@ -94,8 +94,8 @@ commands:
       component: development-tooling
       workingDir: /home/user
       commandLine: |
-        git config --global user.email '${{values.currentUser}}@demo.redhat.com'
-        git config --global user.name '${{values.currentUser}}'
+        git config --global user.email '${{values.ownerEmail}}'
+        git config --global user.name '${{values.owner}}'
         git config --global commit.gpgsign true
         git config --global tag.gpgsign true
         git config --global gpg.x509.program /projects/home/bin/gitsign

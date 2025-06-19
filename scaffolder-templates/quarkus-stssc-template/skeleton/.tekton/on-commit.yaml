@@ -17,6 +17,7 @@ metadata:
     pipelinesascode.tekton.dev/task-8: "https://${{values.gitlabHost}}/rhdh/tssc-sample-pipelines/-/raw/main/tasks/summary.yaml"
     pipelinesascode.tekton.dev/task-9: "https://${{values.gitlabHost}}/rhdh/tssc-sample-pipelines/-/raw/main/tasks/maven.yaml"
     pipelinesascode.tekton.dev/task-10: "https://${{values.gitlabHost}}/rhdh/tssc-sample-pipelines/-/raw/main/tasks/upload-sbom-to-trustification.yaml"
+    pipelinesascode.tekton.dev/task-11: "https://${{values.gitlabHost}}/rhdh/tssc-sample-pipelines/-/raw/main/tasks/verify-commit.yaml"
   labels:
     backstage.io/kubernetes-id: "${{values.name}}"
 spec:
@@ -35,6 +36,14 @@ spec:
       value: '{{revision}}'
     - name: event-type
       value: '{{event_type}}'
+{%- if values.verifyCommits == 'enabled' %}
+    - name: certificate-identity
+      value: '{{body.commits[0].author.name}}@demo.redhat.com'
+    - name: oidc-issuer
+      value: https://sso.${{values.cluster}}/realms/trusted-artifact-signer
+    - name: verify-commit
+      value: 'true'
+{%- endif %}
   pipelineRef:
     name: maven-build-ci
   workspaces:

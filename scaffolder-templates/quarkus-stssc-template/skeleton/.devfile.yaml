@@ -44,7 +44,8 @@ components:
     volume:
       size: 4Gi
   - name: rhtas-clis-unzip
-    command:
+    container:
+      command:
       - /bin/bash
       - -c
       - |
@@ -58,13 +59,13 @@ components:
         gunzip gitsign-amd64.gz
         chmod a+x gitsign-amd64
         mv gitsign-amd64 /projects/home/bin/gitsign
-    image: registry.access.redhat.com/ubi9/toolbox@sha256:47d4891b3e744f5622a31bd21a42dd51358c43bbfd44860cc05c7b29cc520e66
-    sourceMapping: /projects
-    mountSources: true
-    memoryLimit: 256M
-    volumeMounts:
-    - name: home
-      path: /projects/home
+      image: registry.access.redhat.com/ubi9/toolbox@sha256:47d4891b3e744f5622a31bd21a42dd51358c43bbfd44860cc05c7b29cc520e66
+      sourceMapping: /projects
+      mountSources: true
+      memoryLimit: 256M
+      volumeMounts:
+      - name: home
+        path: /projects/home
 {%- endif %}
 commands:
   - id: package

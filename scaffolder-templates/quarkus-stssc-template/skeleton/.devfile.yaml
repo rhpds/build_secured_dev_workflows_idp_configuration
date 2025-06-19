@@ -50,8 +50,8 @@ components:
       - |
         mkdir -p /projects/home/bin
         cd /tmp
-        wget -q https://cli-server-trusted-artifact-signer.${{values.cluster}}/clients/linux/cosign-amd64.gz
-        wget -q https://cli-server-trusted-artifact-signer.${{values.cluster}}/clients/linux/gitsign-amd64.gz
+        wget -q http://cli-server.trusted-artifact-signer.svc:8080/clients/linux/cosign-amd64.gz
+        wget -q http://cli-server.trusted-artifact-signer.svc:8080/clients/linux/gitsign-amd64.gz
         gunzip cosign-amd64.gz
         chmod a+x cosign-amd64
         mv cosign-amd64 /projects/home/bin/cosign
@@ -100,9 +100,9 @@ commands:
         git config --global tag.gpgsign true
         git config --global gpg.x509.program /projects/home/bin/gitsign
         git config --global gpg.format x509
-        git config --global gitsign.fulcio https://fulcio-server-tssc-tas.${{values.cluster}}
+        git config --global gitsign.fulcio http://fulcio-server.tssc-tas.svc
         git config --global gitsign.issuer https://sso.${{values.cluster}}/realms/trusted-artifact-signer
-        git config --global gitsign.rekor https://rekor-server-tssc-tas.${{values.cluster}}
+        git config --global gitsign.rekor http://rekor-server.tssc-tas.svc
         git config --global gitsign.clientid trusted-artifact-signer
       group:
         kind: build

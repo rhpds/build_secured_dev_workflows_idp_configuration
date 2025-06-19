@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: component-locations
+  description: A location grouping application components
+spec:
+  type: url
+  targets:
+    - ./component-rhpds.yaml

@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: open-banking-components
+spec:
+  type: url
+  targets:
+  - ./scaffolder-templates/quarkus-stssc-template/template.yaml
+  - ./scaffolder-templates/quarkus-stssc-jenkins-template/template.yaml

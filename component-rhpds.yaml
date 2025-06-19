@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: provisioning-data
+  description: Provisioning data from demo.redhat.com
+  labels:
+    ocp-apps-domain: apps.cluster-8s549.8s549.sandbox784.opentlc.com
+spec:
+  type: service
+  lifecycle: production
+  owner: tssc

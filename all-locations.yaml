@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: trusted-software-supply-chain-entities
+  description: A collection of RHDH templates for Project Dance
+spec:
+  targets:
+    - ./template-locations.yaml
+    - ./component-locations.yaml

@@ -112,8 +112,6 @@ spec:
           artifactId: ${{ parameters.artifactId }}
           javaPackageName: ${{ parameters.javaPackageName }}
           owner: user:default/${{ user.entity.metadata.name }}
-          user: ${{ user.entity.metadata.name }}
-          userEmail: ${{ user.entity.spec.profile.email }}
           cluster: ${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           gitlabHost: gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           quayHost: tssc-quay-quay-tssc-quay.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}

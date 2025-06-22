@@ -95,8 +95,6 @@ commands:
       component: development-tooling
       workingDir: /home/user
       commandLine: |
-        git config --global user.email '${{values.userEmail}}'
-        git config --global user.name '${{values.user}}'
         git config --global commit.gpgsign true
         git config --global tag.gpgsign true
         git config --global gpg.x509.program /projects/home/bin/gitsign

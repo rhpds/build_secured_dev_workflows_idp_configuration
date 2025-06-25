@@ -1,6 +1,6 @@
-site_name: ${{values.component_id}}
+site_name: ${{values.name}}
 site_description: ${{values.description}}
-repo_url: https://${{values.host}}/${{values.destination}}
+repo_url: https://${{values.gitlabHost}}/${{values.destination}}
 edit_uri: edit/master/docs
 
 plugins:

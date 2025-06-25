@@ -1,26 +1,27 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: ${{values.component_id | dump}}
+  name: ${{values.name | dump}}
   {%- if values.description %}
   description: ${{values.description | dump}}
   {%- endif %}
   annotations:
-    argocd/app-selector: rht-gitops.com/janus-argocd=${{values.component_id}}-bootstrap
-    backstage.io/kubernetes-id: ${{values.component_id}}
-    jenkins.io/job-full-name: ${{values.component_id}}-dev
-    backstage.io/source-location: url:https://${{values.host}}/${{values.destination}}
-    backstage.io/techdocs-ref: url:https://${{values.host}}/${{values.destination}}
+    argocd/app-selector: tssc/gitops=${{values.name}}
+    backstage.io/kubernetes-id: ${{values.name}}
+    jenkins.io/job-full-name: ${{values.name}}
+    backstage.io/source-location: url:https://${{values.gitlabHost}}/${{values.destination}}
+    backstage.io/techdocs-ref: url:https://${{values.gitlabHost}}/${{values.destination}}
     gitlab.com/project-slug: ${{values.destination}}
-    quay.io/repository-slug: ${{values.quay_destination | dump}}
+    quay.io/repository-slug: ${{values.quayDestination | dump}}
   tags:
     - java
     - quarkus
+    - jenkins
   links:
-    - url: https://devspaces${{values.cluster}}/#https://${{values.host}}/${{values.destination}}
+    - url: https://devspaces.${{values.cluster}}/#https://${{values.gitlabHost}}/${{values.destination}}
       title: OpenShift Dev Spaces (VS Code)
       icon: web
-    - url: https://devspaces${{values.cluster}}/#https://${{values.host}}/${{values.destination}}?che-editor=che-incubator/che-idea/latest
+    - url: https://devspaces.${{values.cluster}}/#https://${{values.gitlabHost}}/${{values.destination}}?che-editor=che-incubator/che-idea/latest
       title: OpenShift Dev Spaces (JetBrains IntelliJ)
       icon: web
 spec:
@@ -28,12 +29,12 @@ spec:
   lifecycle: production
   owner: ${{values.owner | dump}}
   providesApis:
-    - ${{values.component_id | dump}}
+    - ${{values.name | dump}}
 ---
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
-  name: ${{values.component_id | dump}}
+  name: ${{values.name | dump}}
   {%- if values.description %}
   description: ${{values.description | dump}}
   {%- endif %}

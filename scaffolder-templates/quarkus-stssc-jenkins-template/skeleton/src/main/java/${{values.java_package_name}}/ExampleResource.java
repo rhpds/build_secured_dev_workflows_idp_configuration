@@ -1,4 +1,4 @@
-package ${{values.java_package_name}};
+package ${{values.javaPackageName}};
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

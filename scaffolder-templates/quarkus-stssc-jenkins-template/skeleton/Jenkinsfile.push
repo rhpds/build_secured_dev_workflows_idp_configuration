@@ -1,0 +1,152 @@
+library identifier: 'RHTAP_Jenkins@main', retriever: modernSCM(
+[$class: 'GitSCMSource',
+remote: 'https://github.com/treddy08/tssc-sample-jenkins.git'])
+
+pipeline {
+    agent {
+        kubernetes {
+        defaultContainer 'jnlp'
+        podRetention onFailure()
+        customWorkspace "/home/jenkins/agent/workspace-${env.BUILD_ID}"
+        yaml '''
+            apiVersion: v1
+            kind: Pod
+            spec:
+              containers:
+              - name: jnlp
+                image: quay.io/jkopriva/rhtap-jenkins-agent:0.1
+                tty: true
+                args: ["${computer.jnlpmac}","${computer.name}"]
+              - name: maven
+                image: maven:3.8.6-openjdk-11
+                command: ["cat"]
+                tty: true
+            '''
+        }
+    }
+
+    environment {
+        ROX_API_TOKEN = credentials('ROX_API_TOKEN')
+        GITOPS_AUTH_USERNAME = credentials('GITOPS_AUTH_USERNAME')
+        GITOPS_AUTH_PASSWORD = credentials('GITOPS_AUTH_PASSWORD')
+        QUAY_IO_CREDS = credentials('QUAY_IO_CREDS')
+        COSIGN_SECRET_PASSWORD = credentials('COSIGN_SECRET_PASSWORD')
+        COSIGN_SECRET_KEY = credentials('COSIGN_SECRET_KEY')
+        COSIGN_PUBLIC_KEY = credentials('COSIGN_PUBLIC_KEY')
+        DISABLE_ACS = false
+        ROX_CENTRAL_ENDPOINT = 'central.tssc-acs.svc:443'
+        POLICY_CONFIGURATION = 'github.com/enterprise-contract/config//rhtap-v0.6'
+        REKOR_HOST = 'http://rekor-server.tssc-tas.svc'
+        IGNORE_REKOR = false
+        INFO = true
+        STRICT = true
+        TLSVERIFY = false
+        DOCKERFILE = 'Dockerfile'
+        CI_TYPE = 'jenkins'
+        GIT_REPO_URL = 'https://${{values.gitlabHost}}/${{values.gitRepoOwner}}/${{values.name}}'
+        GIT_REPO_BRANCH = 'master'
+        GITOPS_REPO_URL = 'https://${{values.gitlabHost}}/${{values.gitRepoOwner}}/${{values.name}}-gitops'
+
+    }
+    stages {
+
+        stage('checkout') {
+            steps {
+                git branch: env.GIT_REPO_BRANCH ?: 'master', url: env.GIT_REPO_URL
+                script {
+                    env.GIT_COMMIT = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                }
+
+            }
+        }
+
+        stage('mvn package') {
+            steps {
+                container('maven') {
+                sh 'mvn clean package'
+                }
+            }
+        }
+
+        stage('init') {
+            steps {
+                script {
+                    env.IMAGE_URL = '${{values.srcImage}}:' + env.GIT_COMMIT
+                    env.IMAGE = env.IMAGE_URL
+                    def isoDate = sh(script: "date -u +%Y-%m-%dT%H:%M:%S.%3NZ", returnStdout: true).trim()
+                    env.EFFECTIVE_TIME = isoDate
+                    env.HOMEDIR = sh(script: 'pwd', returnStdout: true).trim()
+                    println env.EFFECTIVE_TIME
+                    rhtap.info('init')
+                    rhtap.init()
+                }
+            }
+        }
+
+        stage('build') {
+            steps {
+                script {
+                    rhtap.info('buildah_rhtap')
+                    rhtap.buildah_rhtap()
+                    rhtap.info('cosign_sign_attest')
+                    rhtap.cosign_sign_attest()
+                    env.PARAM_IMAGE = env.IMAGE
+                    env.PARAM_IMAGE_DIGEST = sh(script: 'cat $(pwd)/results/buildah-rhtap/IMAGE_DIGEST', returnStdout: true).trim()
+                }
+            }
+        }
+
+        stage('deploy') {
+            steps {
+                script {
+                    rhtap.info('update_deployment')
+                    rhtap.update_deployment()
+                }
+            }
+        }
+
+        stage('acs') {
+            parallel {
+                stage('acs_deploy_check') {
+                    steps {
+                        script {
+                            env.INSECURE_SKIP_TLS_VERIFY = true
+                            rhtap.info('acs_deploy_check')
+                            rhtap.acs_deploy_check()
+                        }
+                    }
+                }
+                stage('acs_image_check') {
+                    steps {
+                        script {
+                            env.INSECURE_SKIP_TLS_VERIFY = true
+                            rhtap.info('acs_image_check')
+                            rhtap.acs_image_check()
+                        }
+                    }
+                }
+                stage('acs_image_scan') {
+                    steps {
+                        script {
+                            env.INSECURE_SKIP_TLS_VERIFY = true
+                            rhtap.info('acs_image_scan')
+                            rhtap.acs_image_scan()
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('summary') {
+            steps {
+                script {
+                    rhtap.info('show_sbom_rhdh')
+                    rhtap.show_sbom_rhdh()
+                    rhtap.info('summary')
+                    rhtap.summary()
+                }
+            }
+        }
+
+    }
+}

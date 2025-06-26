@@ -17,10 +17,14 @@ pipeline {
                 image: quay.io/jkopriva/rhtap-jenkins-agent:0.1
                 tty: true
                 args: ["${computer.jnlpmac}","${computer.name}"]
+                securityContext:
+                  privileged: true
               - name: maven
                 image: maven:3.8.6-openjdk-11
                 command: ["cat"]
                 tty: true
+                securityContext:
+                  privileged: true
             '''
         }
     }
@@ -115,31 +119,37 @@ pipeline {
         }
 
         stage('acs') {
+            environment {
+                INSECURE_SKIP_TLS_VERIFY = 'true'
+            }
             parallel {
                 stage('acs_deploy_check') {
                     steps {
-                        script {
-                            env.INSECURE_SKIP_TLS_VERIFY = true
-                            rhtap.info('acs_deploy_check')
-                            rhtap.acs_deploy_check()
+                        dir('acs_deploy_check') {
+                            script {
+                                rhtap.info('acs_deploy_check')
+                                rhtap.acs_deploy_check()
+                            }
                         }
                     }
                 }
                 stage('acs_image_check') {
                     steps {
-                        script {
-                            env.INSECURE_SKIP_TLS_VERIFY = true
-                            rhtap.info('acs_image_check')
-                            rhtap.acs_image_check()
+                        dir('acs_image_check') {
+                            script {
+                                rhtap.info('acs_image_check')
+                                rhtap.acs_image_check()
+                            }
                         }
                     }
                 }
                 stage('acs_image_scan') {
                     steps {
-                        script {
-                            env.INSECURE_SKIP_TLS_VERIFY = true
-                            rhtap.info('acs_image_scan')
-                            rhtap.acs_image_scan()
+                        dir('acs_image_scan') {
+                            script {
+                                rhtap.info('acs_image_scan')
+                                rhtap.acs_image_scan()
+                            }
                         }
                     }
                 }

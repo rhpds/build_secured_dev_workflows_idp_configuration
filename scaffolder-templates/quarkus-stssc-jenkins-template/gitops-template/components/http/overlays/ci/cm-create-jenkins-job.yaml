@@ -6,7 +6,7 @@ data:
   job.xml: |
     <flow-definition plugin="workflow-job@1498.v33a_0c6f3a_4b_4">
       <actions/>
-      <description>${{values.name}}</description>
+      <description>Build ${{values.name}} maven application</description>
       <keepDependencies>false</keepDependencies>
       <properties>
         <hudson.plugins.jira.JiraProjectProperty plugin="jira@3.13"/>
@@ -41,6 +41,25 @@ data:
       <authToken>${{values.gitWebhookSecret}}</authToken>
       <disabled>false</disabled>
     </flow-definition>
+  folder.xml: |
+    <com.cloudbees.hudson.plugins.folder.Folder plugin="cloudbees-folder@6.980.v5a_cc0cb_25881">
+      <displayName>${{values.name}}</displayName>
+      <properties/>
+      <folderViews class="com.cloudbees.hudson.plugins.folder.views.DefaultFolderViewHolder">
+        <views>
+          <hudson.model.AllView>
+            <owner class="com.cloudbees.hudson.plugins.folder.Folder" reference="../../../.."/>
+            <name>All</name>
+            <filterExecutors>false</filterExecutors>
+            <filterQueue>false</filterQueue>
+            <properties class="hudson.model.View$PropertyList"/>
+          </hudson.model.AllView>
+        </views>
+        <tabBar class="hudson.views.DefaultViewsTabBar"/>
+      </folderViews>
+      <healthMetrics/>
+      <icon class="com.cloudbees.hudson.plugins.folder.icons.StockFolderIcon"/>
+    </com.cloudbees.hudson.plugins.folder.Folder>
   playbook.yaml: |
     - hosts: localhost
       vars:
@@ -50,10 +69,15 @@ data:
       tasks:
       - name: Read rendered config.xml
         slurp:
-          src: /scripts/job.xml
-        register: r_job_config_xml
+          src: /scripts/folder.xml
+        register: r_folder_xml
 
-      - name: Create Jenkins job with rendered XML
+      - name: Read rendered config.xml
+        slurp:
+          src: /scripts/job.xml
+        register: r_job_xml
+
+      - name: Create Jenkins folder
         uri:
           url: "http://jenkins.jenkins.svc/createItem?name={{ jenkins_job }}"
           method: POST
@@ -62,5 +86,17 @@ data:
           force_basic_auth: yes
           headers:
             Content-Type: "application/xml"
-          body: "{{ r_job_config_xml.content | b64decode }}"
-          status_code: 200, 201, 302
+          body: "{{ r_folder_xml.content | b64decode }}"
+          status_code: 200
+
+      - name: Create Jenkins build job
+        uri:
+          url: "http://jenkins.jenkins.svc/job/{{ jenkins_job }}/createItem?name=maven-build-ci"
+          method: POST
+          user: "{{ jenkins_admin_user }}"
+          password: "{{ jenkins_admin_password }}"
+          force_basic_auth: yes
+          headers:
+            Content-Type: "application/xml"
+          body: "{{ r_job_xml.content | b64decode }}"
+          status_code: 200

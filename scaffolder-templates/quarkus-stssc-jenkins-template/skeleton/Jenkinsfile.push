@@ -70,7 +70,7 @@ pipeline {
                     wget -q http://cli-server.trusted-artifact-signer.svc:8080/clients/linux/gitsign-amd64.gz
                     gunzip gitsign-amd64.gz && chmod a+x gitsign-amd64
                     cosign initialize TUF-MIRROR=$TUF_MIRROR TUF-ROOT=$TUF_MIRROR/root.json
-                    ./gitsign-amd64 verify --certificate-identity=$GIT_COMMITTER_EMAIL --certificate-oidc-issuer=$KEYCLOAK_ISSUER_URL $GIT_COMMIT
+                    GITSIGN_REKOR_URL=$REKOR_HOST ./gitsign-amd64 verify --certificate-identity=$GIT_COMMITTER_EMAIL --certificate-oidc-issuer=$KEYCLOAK_ISSUER_URL $GIT_COMMIT
                     rm -rf gitsign*
                 '''
             }

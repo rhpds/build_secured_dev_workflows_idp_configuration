@@ -43,39 +43,39 @@ data:
             validate_certs: false
             status_code: [201]
 
-        # - name: Create {{ git_project }} web hook tag
-        #   ansible.builtin.uri:
-        #     url: https://{{ git_host }}/api/v4/projects/{{ git_project_id[0] }}/hooks
-        #     method: POST
-        #     body_format: form-urlencoded
-        #     body:
-        #       url: http://nginx.nginx.svc:7775
-        #       tag_push_events: true
-        #       push_events: false
-        #       token: '{{  webhook_secret }}'
-        #       enable_ssl_verification: false
-        #     headers:
-        #       PRIVATE-TOKEN: '{{  git_token }}'
-        #     validate_certs: false
-        #     status_code: [201]
+        - name: Create {{ git_project }} web hook tag
+          ansible.builtin.uri:
+            url: https://{{ git_host }}/api/v4/projects/{{ git_project_id[0] }}/hooks
+            method: POST
+            body_format: form-urlencoded
+            body:
+              url: http://jenkins.jenkins.svc/job/{{ git_project }}/job/promote-to-stage/build?token={{ webhook_secret }}
+              tag_push_events: true
+              push_events: false
+              token: '{{  webhook_secret }}'
+              enable_ssl_verification: false
+            headers:
+              PRIVATE-TOKEN: '{{  git_token }}'
+            validate_certs: false
+            status_code: [201]
 
-        # - name: Create {{ git_project }} web hook release
-        #   ansible.builtin.uri:
-        #     url: https://{{ git_host }}/api/v4/projects/{{ git_project_id[0] }}/hooks
-        #     method: POST
-        #     body_format: form-urlencoded
-        #     body:
-        #       url: http://nginx.nginx.svc:7776
-        #       releases_events: true
-        #       push_events: false
-        #       token: '{{  webhook_secret }}'
-        #       custom_webhook_template: >-
-        #         {% raw %}
-        #         {"object_kind": "{{object_kind}}","ref": "{{tag}}","project": {"name": "{{project.name}}","web_url": "{{project.web_url}}","path_with_namespace": "{{project.path_with_namespace}}"},"commits": [{"id": "{{commit.id}}","message": "{{commit.message}}","title": "{{commit.title}}","url": "{{commit.url}}","author": {"name": "{{commit.author.name}}","email": "{{commit.author.email}}"}}]}
-        #         {% endraw %}
-        #       enable_ssl_verification: false
-        #     headers:
-        #       PRIVATE-TOKEN: '{{  git_token }}'
-        #     validate_certs: false
-        #     status_code: [201]
+        - name: Create {{ git_project }} web hook release
+          ansible.builtin.uri:
+            url: https://{{ git_host }}/api/v4/projects/{{ git_project_id[0] }}/hooks
+            method: POST
+            body_format: form-urlencoded
+            body:
+              url: http://jenkins.jenkins.svc/job/{{ git_project }}/job/promote-to-prod/build?token={{ webhook_secret }}
+              releases_events: true
+              push_events: false
+              token: '{{  webhook_secret }}'
+              custom_webhook_template: >-
+                {% raw %}
+                {"object_kind": "{{object_kind}}","ref": "{{tag}}","project": {"name": "{{project.name}}","web_url": "{{project.web_url}}","path_with_namespace": "{{project.path_with_namespace}}"},"commits": [{"id": "{{commit.id}}","message": "{{commit.message}}","title": "{{commit.title}}","url": "{{commit.url}}","author": {"name": "{{commit.author.name}}","email": "{{commit.author.email}}"}}]}
+                {% endraw %}
+              enable_ssl_verification: false
+            headers:
+              PRIVATE-TOKEN: '{{  git_token }}'
+            validate_certs: false
+            status_code: [201]
 {% endraw %}

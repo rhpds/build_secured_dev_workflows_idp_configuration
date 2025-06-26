@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: ${{ values.name }}-create-jenkins-job
+  name: ${{ values.name }}-create-webhook
 spec:
   backoffLimit: 100
   template:

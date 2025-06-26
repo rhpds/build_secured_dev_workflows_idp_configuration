@@ -118,6 +118,7 @@ spec:
           quayHost: tssc-quay-quay-tssc-quay.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           destination: ${{ parameters.repoOwner }}/${{ parameters.name }}
           quayDestination: ${{ parameters.imageOrganization}}/${{ parameters.name }}
+          ssoHost: sso.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           port: 8080
           verifyCommits: ${{ parameters.repoVerifyCommits }}
 
@@ -157,7 +158,6 @@ spec:
           gitRepoName: ${{ parameters.name }}-gitops
           gitWebhookSecret: openshift
           defaultBranch: master
-          ssoHost: sso.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
 
     - action: fs:rename
       id: renameComponentDir

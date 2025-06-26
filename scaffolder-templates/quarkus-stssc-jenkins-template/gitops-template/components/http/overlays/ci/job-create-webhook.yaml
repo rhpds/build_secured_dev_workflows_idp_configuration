@@ -17,7 +17,6 @@ spec:
             -e git_host=${{ values.gitlabHost }} \
             -e git_project=${{ values.name }} \
             -e git_token=$(cat /secrets/auth/password) \
-            -e build_config_namespace=${{ values.namespace }}-ci \
             -e webhook_secret=${{ values.gitWebhookSecret }}
         image: quay.io/agnosticd/ee-multicloud:latest
         volumeMounts:

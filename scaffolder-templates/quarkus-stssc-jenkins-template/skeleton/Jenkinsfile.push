@@ -50,16 +50,6 @@ pipeline {
     }
     stages {
 
-        stage('checkout') {
-            steps {
-                git branch: env.GIT_REPO_BRANCH ?: 'master', url: env.GIT_REPO_URL
-                script {
-                    env.GIT_COMMIT = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                }
-
-            }
-        }
-
         stage('mvn package') {
             steps {
                 container('maven') {
@@ -71,6 +61,7 @@ pipeline {
         stage('init') {
             steps {
                 script {
+                    env.GIT_COMMIT = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     env.IMAGE_URL = '${{values.srcImage}}:' + env.GIT_COMMIT
                     env.IMAGE = env.IMAGE_URL
                     def isoDate = sh(script: "date -u +%Y-%m-%dT%H:%M:%S.%3NZ", returnStdout: true).trim()

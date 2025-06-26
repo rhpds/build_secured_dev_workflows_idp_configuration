@@ -43,8 +43,6 @@ pipeline {
         TLSVERIFY = false
         DOCKERFILE = 'Dockerfile'
         CI_TYPE = 'jenkins'
-        GIT_REPO_URL = 'https://${{values.gitlabHost}}/${{values.gitRepoOwner}}/${{values.name}}'
-        GIT_REPO_BRANCH = 'master'
         GITOPS_REPO_URL = 'https://${{values.gitlabHost}}/${{values.gitRepoOwner}}/${{values.name}}-gitops'
 
     }

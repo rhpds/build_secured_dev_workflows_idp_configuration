@@ -43,7 +43,7 @@ pipeline {
         TLSVERIFY = false
         DOCKERFILE = 'Dockerfile'
         CI_TYPE = 'jenkins'
-        GITOPS_REPO_URL = 'https://${{values.gitlabHost}}/${{values.gitRepoOwner}}/${{values.name}}-gitops'
+        GITOPS_REPO_URL = 'https://${{values.gitlabHost}}/${{values.destination}}-gitops'
 
     }
     stages {
@@ -60,7 +60,7 @@ pipeline {
             steps {
                 script {
                     env.GIT_COMMIT = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                    env.IMAGE_URL = '${{values.srcImage}}:' + env.GIT_COMMIT
+                    env.IMAGE_URL = '${{values.quayHost}}/${{values.quayDestination}}:' + env.GIT_COMMIT
                     env.IMAGE = env.IMAGE_URL
                     def isoDate = sh(script: "date -u +%Y-%m-%dT%H:%M:%S.%3NZ", returnStdout: true).trim()
                     env.EFFECTIVE_TIME = isoDate

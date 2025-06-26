@@ -37,6 +37,10 @@ pipeline {
         COSIGN_SECRET_PASSWORD = credentials('COSIGN_SECRET_PASSWORD')
         COSIGN_SECRET_KEY = credentials('COSIGN_SECRET_KEY')
         COSIGN_PUBLIC_KEY = credentials('COSIGN_PUBLIC_KEY')
+        TRUSTIFICATION_BOMBASTIC_API_URL = credentials('TRUSTIFICATION_BOMBASTIC_API_URL')
+        TRUSTIFICATION_OIDC_ISSUER_URL = credentials('TRUSTIFICATION_OIDC_ISSUER_URL')
+        TRUSTIFICATION_OIDC_CLIENT_ID = credentials('TRUSTIFICATION_OIDC_CLIENT_ID')
+        TRUSTIFICATION_OIDC_CLIENT_SECRET = credentials('TRUSTIFICATION_OIDC_CLIENT_SECRET')
         DISABLE_ACS = false
         ROX_CENTRAL_ENDPOINT = 'central.tssc-acs.svc:443'
         POLICY_CONFIGURATION = 'github.com/enterprise-contract/config//rhtap-v0.6'
@@ -109,14 +113,33 @@ pipeline {
             }
         }
 
-        stage('deploy') {
-            steps {
-                script {
-                    rhtap.info('update_deployment')
-                    rhtap.update_deployment()
+        stage('deploy-and-upload-to-tpa') {
+            parallel {
+                stage('deploy') {
+                    steps {
+                        script {
+                            rhtap.info('update_deployment')
+                            rhtap.update_deployment()
+                        }
+                    }
+                }
+                stage('upload_sbom_to_trustification') {
+                    environment {
+                        SBOMS_DIR='./results/temp/files'
+                    }
+                    steps {
+                        sh '''
+                            find $SBOMS_DIR -type f -name "*.json" -exec sed -i -E 's|/home/jenkins/agent/workspace-[0-9]+/results/temp/files/image|${{values.name}}|' {} +
+                        '''
+                        script {
+                            rhtap.info('upload_sbom_to_trustification')
+                            rhtap.upload_sbom_to_trustification()
+                        }
+                    }
                 }
             }
         }
+
 
         stage('acs') {
             environment {
@@ -166,6 +189,5 @@ pipeline {
                 }
             }
         }
-
     }
 }

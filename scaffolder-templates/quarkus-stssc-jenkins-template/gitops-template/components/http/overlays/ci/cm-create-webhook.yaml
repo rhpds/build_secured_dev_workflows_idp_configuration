@@ -35,7 +35,7 @@ data:
             method: POST
             body_format: form-urlencoded
             body:
-              url: http://jenkins.jenkins.svc/job/{{ git_project }}/build?token={{ webhook_secret }}
+              url: http://jenkins.jenkins.svc/job/{{ git_project }}/job/maven-build-ci/build?token={{ webhook_secret }}
               push_events: true
               enable_ssl_verification: false
             headers:

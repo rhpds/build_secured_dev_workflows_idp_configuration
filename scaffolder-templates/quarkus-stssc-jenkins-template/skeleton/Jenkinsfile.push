@@ -58,6 +58,7 @@ pipeline {
                     env.GIT_COMMITTER_EMAIL = sh(script: "git log -1 --pretty=format:'%ae'", returnStdout: true).trim()
                 }
                 sh '''
+                    GIT_COMMITTER_EMAIL=$(git log -1 --pretty=format:'%ae')
                     wget -q http://cli-server.trusted-artifact-signer.svc:8080/clients/linux/gitsign-amd64.gz
                     gunzip gitsign-amd64.gz && chmod a+x gitsign-amd64
                     cosign initialize TUF-MIRROR=$TUF_MIRROR TUF-ROOT=$TUF_MIRROR/root.json

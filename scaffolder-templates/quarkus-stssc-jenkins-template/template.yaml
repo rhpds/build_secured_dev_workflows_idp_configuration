@@ -157,6 +157,7 @@ spec:
           gitRepoName: ${{ parameters.name }}-gitops
           gitWebhookSecret: openshift
           defaultBranch: master
+          ssoHost: sso.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
 
     - action: fs:rename
       id: renameComponentDir

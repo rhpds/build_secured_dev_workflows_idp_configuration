@@ -44,14 +44,34 @@ pipeline {
         DOCKERFILE = 'Dockerfile'
         CI_TYPE = 'jenkins'
         GITOPS_REPO_URL = 'https://${{values.gitlabHost}}/${{values.destination}}-gitops'
-
+{%- if values.verifyCommits == 'enabled' %}
+        TUF_MIRROR = 'http://tuf.tssc-tas.svc'
+        KEYCLOAK_ISSUER_URL = 'https://${{values.ssoHost}}/realms/trusted-artifact-signer'
+{%- endif %}
     }
     stages {
+
+{%- if values.verifyCommits == 'enabled' %}
+        stage('verify-commit') {
+            steps {
+                script {
+                    env.GIT_COMMITTER_EMAIL = sh(script: "git log -1 --pretty=format:'%ae'", returnStdout: true).trim()
+                }
+                sh '''
+                    wget -q http://cli-server.trusted-artifact-signer.svc:8080/clients/linux/gitsign-amd64.gz
+                    gunzip gitsign-amd64.gz && chmod a+x gitsign-amd64
+                    cosign initialize TUF-MIRROR=$TUF_MIRROR TUF-ROOT=$TUF_MIRROR/root.json
+                    ./gitsign-amd64 verify --certificate-identity=$GIT_COMMITTER_EMAIL --certificate-oidc-issuer=$KEYCLOAK_ISSUER_URL HEAD
+                    rm -rf gitsign*
+                '''
+            }
+        }
+{%- endif %}
 
         stage('mvn package') {
             steps {
                 container('maven') {
-                sh 'mvn clean package'
+                    sh 'mvn clean package'
                 }
             }
         }

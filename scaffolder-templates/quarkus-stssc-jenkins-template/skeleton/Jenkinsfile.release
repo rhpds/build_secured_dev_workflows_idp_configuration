@@ -73,7 +73,7 @@ tee ./results/gather-deploy-images/IMAGES_TO_VERIFY <<EOF
     ]
 }
 EOF
-                    echo $GIT_TAG | tee ./results/gather-deploy-images/IMAGE_TAG
+                    printf "%s" "$GIT_TAG" | tee ./results/gather-deploy-images/IMAGE_TAG
                 '''
             }
         }

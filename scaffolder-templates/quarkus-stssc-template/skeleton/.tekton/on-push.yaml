@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
-  name: ${{values.name}}-maven-build
+  name: maven-image-build
   annotations:
     pipelinesascode.tekton.dev/on-cel-expression: |
       body.object_kind == "push" && body.ref == "refs/heads/master"

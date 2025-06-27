@@ -52,13 +52,13 @@ pipeline {
             steps {
                 sh '''
                     GIT_URL=$(git config --get remote.origin.url)
-                    GIT_HOST=$(echo $GIT_URL | sed -E 's#(https?://[^/]+).*#\1#')
+                    GIT_HOST=$(echo $GIT_URL | sed -E 's#(https?://[^/]+).*#\\1#')
                     GIT_REPO=$(basename -s .git "$GIT_URL")
                     GIT_PROJECT_ID=$(curl -s --header 'PRIVATE-TOKEN: '$GITOPS_CREDENTIALS_PSW'' ''$GIT_HOST'/api/v4/projects?search='$GIT_REPO'' | jq -r '.[] | select(.name == "'${GIT_REPO}'") | .id')
                     GIT_TAG=$(curl -s --header 'PRIVATE-TOKEN: '$GITOPS_CREDENTIALS_PSW'' ''$GIT_HOST'/api/v4/projects/'$GIT_PROJECT_ID'/releases' | jq -r '.[0] | .tag_name')
 
-                    mkdir -p $(pwd)/results/gather-deploy-images
-tee $(pwd)/results/gather-deploy-images/IMAGES_TO_VERIFY <<EOF
+                    mkdir -p ./results/gather-deploy-images
+tee ./results/gather-deploy-images/IMAGES_TO_VERIFY <<EOF
 {
     "components": [
     {
@@ -73,7 +73,7 @@ tee $(pwd)/results/gather-deploy-images/IMAGES_TO_VERIFY <<EOF
     ]
 }
 EOF
-                    cat $(pwd)/results/gather-deploy-images/IMAGES_TO_VERIFY
+                    echo $GIT_TAG | tee ./results/gather-deploy-images/IMAGE_TAG
                 '''
             }
         }
@@ -93,6 +93,7 @@ EOF
             steps {
                 container('skopeo') {
                     sh '''
+                        GIT_TAG=$(cat ./results/gather-deploy-images/IMAGE_TAG)
                         IMAGE_REGISTRY="${IMAGE_URL%%/*}"
                         skopeo login -u $QUAY_IO_CREDS_USR -p $QUAY_IO_CREDS_PSW $IMAGE_REGISTRY
                         skopeo copy docker://$IMAGE_URL:$GIT_TAG docker://$IMAGE_URL:prod-$GIT_TAG
@@ -104,7 +105,8 @@ EOF
         stage('deploy-to-prod') {
             steps {
                 script {
-                    env.PARAM_IMAGE = env.IMAGE_URL + ':prod-' + env.GIT_TAG
+                    def git_tag = readFile './results/gather-deploy-images/IMAGE_TAG'
+                    env.PARAM_IMAGE = env.IMAGE_URL + ':prod-' + git_tag
                     rhtap.info('update_deployment')
                     rhtap.update_deployment()
                 }

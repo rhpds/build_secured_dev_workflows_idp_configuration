@@ -3,7 +3,7 @@ kind: Application
 metadata:
   name: ${{ values.name }}-development
   namespace: ${{ values.argoNS }}
-  finalizers: ["resources-finalizer.argocd.argoproj.io"] 
+  finalizers: ["resources-finalizer.argocd.argoproj.io"]
 spec:
   project: ${{ values.argoProject }}
   source:
@@ -15,11 +15,18 @@ spec:
     server: https://kubernetes.default.svc
   syncPolicy:
     managedNamespaceMetadata:
-      labels: 
+      labels:
         argocd.argoproj.io/managed-by: ${{ values.argoNS }}
-    automated: 
+    automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
       - PruneLast=true
+      - ApplyOutOfSyncOnly=true
+    retry:
+      limit: -1
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 2m

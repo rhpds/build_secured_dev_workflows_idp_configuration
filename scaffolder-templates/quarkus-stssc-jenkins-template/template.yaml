@@ -62,11 +62,6 @@ spec:
           type: string
           description: Name of the Quay Organization
           default: tssc
-        imageTag:
-          title: Image Tag
-          default: latest
-          type: string
-          description: Build Image tag
     - title: Application repository Information
       required:
         - repoHost

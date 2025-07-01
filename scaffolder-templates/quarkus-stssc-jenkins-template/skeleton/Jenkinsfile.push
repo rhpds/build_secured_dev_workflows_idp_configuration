@@ -62,9 +62,6 @@ pipeline {
 {%- if values.verifyCommits == 'enabled' %}
         stage('verify-commit') {
             steps {
-                script {
-                    env.GIT_COMMITTER_EMAIL = sh(script: "git log -1 --pretty=format:'%ae'", returnStdout: true).trim()
-                }
                 sh '''
                     GIT_COMMITTER_EMAIL=$(git log -1 --pretty=format:'%ae')
                     wget -q http://cli-server.trusted-artifact-signer.svc:8080/clients/linux/gitsign-amd64.gz
@@ -129,7 +126,8 @@ pipeline {
                     }
                     steps {
                         sh '''
-                            find $SBOMS_DIR -type f -name "*.json" -exec sed -i -E 's|/home/jenkins/agent/workspace-[0-9]+/results/temp/files/image|${{values.name}}|' {} +
+                            find $SBOMS_DIR -type f -name "*.json" ! -name "*cyclonedx.json" -delete
+                            jq '.metadata.component.name = "${{values.name}}"' $SBOMS_DIR/*.json > tmp && mv tmp $SBOMS_DIR/*.json
                         '''
                         script {
                             rhtap.info('upload_sbom_to_trustification')

@@ -29,16 +29,16 @@ spec:
         groupId:
           title: Group Id
           type: string
-          default: redhat.janus
+          default: redhat.rhdh
           description: Maven Group Id
         artifactId:
           title: Artifact Id
           type: string
-          default: quarkus-app
+          default: my-quarkus-app
           description: Maven Artifact Id
         javaPackageName:
           title: Java Package Name
-          default: org.redhat.janus
+          default: org.redhat.rhdh
           type: string
           description: Name for the java package. eg (com.redhat.blah)
         description:

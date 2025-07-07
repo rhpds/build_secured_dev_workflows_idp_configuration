@@ -79,4 +79,27 @@ data:
               PRIVATE-TOKEN: '{{  git_token }}'
             validate_certs: false
             status_code: [201]
+
 {% endraw %}
+{%- if values.verify_commits != 'enabled' %}
+{% raw %}
+
+        - name: Trigger pipeline
+          ansible.builtin.uri:
+            url: https://{{ git_host }}/api/v4/projects/{{ git_project_id[0] }}/repository/commits
+            method: POST
+            body_format: json
+            body:
+              branch: "master"
+              commit_message: "Trigger pipeline - dummy commit"
+              actions:
+                - action: "create"
+                  file_path: ".trigger-timestamp"
+                  content: "{{ now(utc=True).isoformat() }}"
+            headers:
+              PRIVATE-TOKEN: '{{  git_token }}'
+            validate_certs: false
+            status_code: [201]
+
+{% endraw %}
+{%- endif %}

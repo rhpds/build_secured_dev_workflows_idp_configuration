@@ -22,7 +22,7 @@ spec:
           title: Name
           type: string
           description: Unique name of the component
-          default: my-quarkus-app
+          default: my-quarkus-tkn
           ui:field: EntityNamePicker
           maxLength: 23
         groupId:
@@ -33,7 +33,7 @@ spec:
         artifactId:
           title: Artifact Id
           type: string
-          default: my-quarkus-app
+          default: my-quarkus-tkn
           description: Maven Artifact Id
         javaPackageName:
           title: Java Package Name

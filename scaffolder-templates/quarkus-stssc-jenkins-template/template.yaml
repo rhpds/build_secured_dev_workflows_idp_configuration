@@ -23,22 +23,22 @@ spec:
           title: Name
           type: string
           description: Unique name of the component
-          default: my-quarkus-app
+          default: my-quarkus-jnk
           ui:field: EntityNamePicker
           maxLength: 23
         groupId:
           title: Group Id
           type: string
-          default: redhat.janus
+          default: redhat.rhdh
           description: Maven Group Id
         artifactId:
           title: Artifact Id
           type: string
-          default: quarkus-app
+          default: my-quarkus-jnk
           description: Maven Artifact Id
         javaPackageName:
           title: Java Package Name
-          default: org.redhat.janus
+          default: org.redhat.rhdh
           type: string
           description: Name for the java package. eg (com.redhat.blah)
         description:

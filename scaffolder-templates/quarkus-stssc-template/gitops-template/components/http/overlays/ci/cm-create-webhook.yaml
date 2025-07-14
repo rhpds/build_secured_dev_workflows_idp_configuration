@@ -81,7 +81,7 @@ data:
             status_code: [201]
 
 {% endraw %}
-{%- if values.verify_commits != 'enabled' %}
+{%- if values.verifyCommits != 'enabled' %}
 {% raw %}
 
         - name: Trigger pipeline

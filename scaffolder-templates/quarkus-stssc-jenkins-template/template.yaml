@@ -110,7 +110,7 @@ spec:
           owner: user:default/${{ user.entity.metadata.name }}
           cluster: ${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           gitlabHost: gitlab-gitlab.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
-          quayHost: tssc-quay-quay-tssc-quay.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
+          quayHost: quay-${{ steps["fetch-provision-data"].output.entity.metadata.labels["guid"] }}.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
           destination: ${{ parameters.repoOwner }}/${{ parameters.name }}
           quayDestination: ${{ parameters.imageOrganization}}/${{ parameters.name }}
           ssoHost: sso.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}
@@ -144,7 +144,7 @@ spec:
           argoComponentOverlays: './components/${{ parameters.name }}/overlays'
           owner: user:default/${{ user.entity.metadata.name }}
           image: quay.io/redhat-appstudio/rhtap-task-runner:latest
-          srcImage: 'tssc-quay-quay-tssc-quay.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}/${{ parameters.imageOrganization }}/${{ parameters.name }}'
+          srcImage: 'quay-${{ steps["fetch-provision-data"].output.entity.metadata.labels["guid"] }}.${{ steps["fetch-provision-data"].output.entity.metadata.labels["ocp-apps-domain"] }}/${{ parameters.imageOrganization }}/${{ parameters.name }}'
           port: 8080
           argoNS: tssc-gitops
           argoProject: default

@@ -22,6 +22,8 @@ metadata:
     backstage.io/kubernetes-id: "${{values.name}}"
 spec:
   params:
+    - name: component-name
+      value: ${{values.name}}
     - name: dockerfile
       value: ./Dockerfile
     - name: git-url

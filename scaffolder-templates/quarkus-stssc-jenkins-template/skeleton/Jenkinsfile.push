@@ -52,6 +52,7 @@ pipeline {
         DOCKERFILE = 'Dockerfile'
         CI_TYPE = 'jenkins'
         GITOPS_REPO_URL = 'https://${{values.gitlabHost}}/${{values.destination}}-gitops'
+        GRPC_ENFORCE_ALPN_ENABLED = 'FALSE'
 {%- if values.verifyCommits == 'enabled' %}
         TUF_MIRROR = 'http://tuf.tssc-tas.svc'
         KEYCLOAK_ISSUER_URL = 'https://${{values.ssoHost}}/realms/trusted-artifact-signer'

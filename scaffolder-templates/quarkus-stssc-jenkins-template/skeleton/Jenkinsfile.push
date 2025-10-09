@@ -52,7 +52,6 @@ pipeline {
         DOCKERFILE = 'Dockerfile'
         CI_TYPE = 'jenkins'
         GITOPS_REPO_URL = 'https://${{values.gitlabHost}}/${{values.destination}}-gitops'
-        GRPC_ENFORCE_ALPN_ENABLED = 'FALSE'
 {%- if values.verifyCommits == 'enabled' %}
         TUF_MIRROR = 'http://tuf.tssc-tas.svc'
         KEYCLOAK_ISSUER_URL = 'https://${{values.ssoHost}}/realms/trusted-artifact-signer'
@@ -100,13 +99,15 @@ pipeline {
 
         stage('build') {
             steps {
-                script {
-                    rhtap.info('buildah_rhtap')
-                    rhtap.buildah_rhtap()
-                    rhtap.info('cosign_sign_attest')
-                    rhtap.cosign_sign_attest()
-                    env.PARAM_IMAGE = env.IMAGE
-                    env.PARAM_IMAGE_DIGEST = sh(script: 'cat $(pwd)/results/buildah-rhtap/IMAGE_DIGEST', returnStdout: true).trim()
+                retry(3) {
+                    script {
+                        rhtap.info('buildah_rhtap')
+                        rhtap.buildah_rhtap()
+                        rhtap.info('cosign_sign_attest')
+                        rhtap.cosign_sign_attest()
+                        env.PARAM_IMAGE = env.IMAGE
+                        env.PARAM_IMAGE_DIGEST = sh(script: 'cat $(pwd)/results/buildah-rhtap/IMAGE_DIGEST', returnStdout: true).trim()
+                    }
                 }
             }
         }

@@ -8,7 +8,7 @@ metadata:
     - shared
     - infrastructure
 spec:
-  owner: user1
+  owner: user:default/user1
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
@@ -19,7 +19,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/database.yaml"
 spec:
   type: database
-  owner: user1
+  owner: user:default/user1
   system: sso_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -31,7 +31,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/s3-bucket.yaml"
 spec:
   type: storage
-  owner: user1
+  owner: user:default/user1
   system: sso_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -43,7 +43,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/redis.yaml"
 spec:
   type: storage
-  owner: user1
+  owner: user:default/user1
   system: sso_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -55,7 +55,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/kafka.yaml"
 spec:
   type: storage
-  owner: user1
+  owner: user:default/user1
   system: sso_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -68,7 +68,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user1
+  owner: user:default/user1
   system: sso_system
   definition: |
     syntax = "proto3";
@@ -97,7 +97,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user1
+  owner: user:default/user1
   system: sso_system
   dependsOn:
     - resource:sso_database
@@ -120,7 +120,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user1
+  owner: user:default/user1
   system: sso_system
   consumesApis:
     - sso_api
@@ -136,7 +136,7 @@ metadata:
     - ecommerce
     - recommendations
 spec:
-  owner: user4
+  owner: user:default/user4
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
@@ -147,7 +147,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/database.yaml"
 spec:
   type: database
-  owner: user4
+  owner: user:default/user4
   system: customerweb_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -159,7 +159,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/s3-bucket.yaml"
 spec:
   type: storage
-  owner: user4
+  owner: user:default/user4
   system: customerweb_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -171,7 +171,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/redis.yaml"
 spec:
   type: storage
-  owner: user4
+  owner: user:default/user4
   system: customerweb_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -183,7 +183,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/kafka.yaml"
 spec:
   type: storage
-  owner: user4
+  owner: user:default/user4
   system: customerweb_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -196,7 +196,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user4
+  owner: user:default/user4
   system: customerweb_system
   definition: |
     syntax = "proto3";
@@ -221,7 +221,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user4
+  owner: user:default/user4
   system: customerweb_system
   definition: |
     syntax = "proto3";
@@ -246,7 +246,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user4
+  owner: user:default/user4
   system: customerweb_system
   definition: |
     syntax = "proto3";
@@ -271,7 +271,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user4
+  owner: user:default/user4
   system: customerweb_system
   dependsOn:
     - resource:customerweb_database
@@ -293,7 +293,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user4
+  owner: user:default/user4
   system: customerweb_system
   dependsOn:
     - resource:customerweb_redis
@@ -310,7 +310,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user4
+  owner: user:default/user4
   system: customerweb_system
   dependsOn:
     - resource:customerweb_kafka
@@ -327,7 +327,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user4
+  owner: user:default/user4
   system: training_system
   consumesApis:
     - customerweb_api
@@ -340,7 +340,7 @@ metadata:
   tags:
     - training
 spec:
-  owner: user4
+  owner: user:default/user4
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
@@ -351,7 +351,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/database.yaml"
 spec:
   type: database
-  owner: user4
+  owner: user:default/user4
   system: training_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -363,7 +363,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/s3-bucket.yaml"
 spec:
   type: storage
-  owner: user4
+  owner: user:default/user4
   system: training_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -376,7 +376,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user4
+  owner: user:default/user4
   system: training_system
   definition: |
     syntax = "proto3";
@@ -405,7 +405,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user4
+  owner: user:default/user4
   system: training_system
   dependsOn:
     - resource:training_database
@@ -429,7 +429,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user4
+  owner: user:default/user4
   system: training_system
   consumesApis:
     - training_api
@@ -442,7 +442,7 @@ metadata:
   tags:
     - marketing
 spec:
-  owner: user2
+  owner: user:default/user2
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
@@ -453,7 +453,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/database.yaml"
 spec:
   type: database
-  owner: user2
+  owner: user:default/user2
   system: marketing_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -465,7 +465,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/s3-bucket.yaml"
 spec:
   type: storage
-  owner: user2
+  owner: user:default/user2
   system: marketing_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -478,7 +478,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: marketing_system
   definition: |
     syntax = "proto3";
@@ -505,7 +505,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: marketing_system
   dependsOn:
     - resource:marketing_database
@@ -523,7 +523,7 @@ metadata:
     - ecommerce
     - consumer
 spec:
-  owner: user2
+  owner: user:default/user2
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
@@ -534,7 +534,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/database.yaml"
 spec:
   type: database
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -546,7 +546,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/s3-bucket.yaml"
 spec:
   type: storage
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -559,7 +559,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   definition: |
     syntax = "proto3";
@@ -584,7 +584,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   definition: |
     syntax = "proto3";
@@ -609,7 +609,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   definition: |
     syntax = "proto3";
@@ -634,7 +634,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   definition: |
     syntax = "proto3";
@@ -659,7 +659,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   definition: |
     syntax = "proto3";
@@ -684,7 +684,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   definition: |
     syntax = "proto3";
@@ -709,7 +709,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   definition: |
     syntax = "proto3";
@@ -734,7 +734,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   definition: |
     syntax = "proto3";
@@ -759,7 +759,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   providesApis:
     - checkout_api
@@ -774,7 +774,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   providesApis:
     - payments_api
@@ -789,7 +789,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   providesApis:
     - ads_api
@@ -804,7 +804,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   providesApis:
     - cart_api
@@ -819,7 +819,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   providesApis:
     - catalog_api
@@ -834,7 +834,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   providesApis:
     - shipping_api
@@ -849,7 +849,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   providesApis:
     - email_api
@@ -865,7 +865,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user4
+  owner: user:default/user4
   system: ecommerce_system
   dependsOn:
     - resource:ecommerce_database
@@ -899,7 +899,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: ecommerce_system
   consumesApis:
     - ecommerce_api
@@ -912,7 +912,7 @@ metadata:
   tags:
     - finance
 spec:
-  owner: user2
+  owner: user:default/user2
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
@@ -923,7 +923,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/database.yaml"
 spec:
   type: database
-  owner: user2
+  owner: user:default/user2
   system: finance_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -935,7 +935,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/s3-bucket.yaml"
 spec:
   type: storage
-  owner: user2
+  owner: user:default/user2
   system: finance_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -948,7 +948,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: finance_system
   definition: |
     syntax = "proto3";
@@ -973,7 +973,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: finance_system
   dependsOn:
     - resource:finance_database
@@ -991,7 +991,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user2
+  owner: user:default/user2
   system: finance_system
   consumesApis:
     - finance_api
@@ -1005,7 +1005,7 @@ metadata:
     - accounting
     - internal
 spec:
-  owner: user3
+  owner: user:default/user3
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
@@ -1016,7 +1016,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/database.yaml"
 spec:
   type: database
-  owner: user3
+  owner: user:default/user3
   system: accounting_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -1028,7 +1028,7 @@ metadata:
     backstage.io/managed-by-location: "url:https://github.com/my-org/my-repo/blob/master/s3-bucket.yaml"
 spec:
   type: storage
-  owner: user3
+  owner: user:default/user3
   system: accounting_system
 ---
 apiVersion: backstage.io/v1alpha1
@@ -1041,7 +1041,7 @@ metadata:
 spec:
   type: grpc
   lifecycle: production
-  owner: user3
+  owner: user:default/user3
   system: accounting_system
   definition: |
     syntax = "proto3";
@@ -1066,7 +1066,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user3
+  owner: user:default/user3
   system: accounting_system
   dependsOn:
     - resource:accounting_database
@@ -1086,7 +1086,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: user3
+  owner: user:default/user3
   system: accounting_system
   consumesApis:
     - accounting_api

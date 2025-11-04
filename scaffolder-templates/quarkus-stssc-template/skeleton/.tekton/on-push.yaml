@@ -41,7 +41,7 @@ spec:
 {%- if values.verifyCommits == 'enabled' %}
     - name: certificate-identity
       value: '{{body.commits[0].author.email}}'
-    - name: oidc-issuer
+    - name: certificate-oidc-issuer
       value: https://sso.${{values.cluster}}/realms/sso
     - name: verify-commit
       value: 'true'

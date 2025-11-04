@@ -24,6 +24,10 @@ spec:
     value: '${{values.quayHost}}/tssc/${{values.name}}'
   - name: source-image-tag
     value: '{{body.ref}}'
+  - name: certificate-oidc-issuer
+    value: https://sso.${{values.cluster}}/realms/tas-chains
+  - name: certificate-identity
+    value: trusted-artifact-signer@demo.redhat.com
   - name: environment
     value: prod
   pipelineRef:

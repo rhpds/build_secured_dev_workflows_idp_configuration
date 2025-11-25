@@ -43,8 +43,8 @@ spec:
         description:
           title: Description
           type: string
-          description: Help others understand what this website is for.
-          default: A cool quarkus app
+          description: Help others understand what this application is for.
+          default: A Quarkus application that uses Langchain and Software Supply Chain Security with Tekton CI
     - title: Provide Image Registry Information
       required:
         - imageHost
@@ -61,6 +61,7 @@ spec:
           type: string
           description: Name of the Quay Organization
           default: tssc
+          ui:readonly: true
     - title: Application repository Information
       required:
         - repoHost

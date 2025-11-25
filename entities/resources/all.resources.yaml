@@ -1,0 +1,68 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: transaction-store
+  description: BigTable database for storing transaction history and statements
+  tags:
+    - database
+    - bigtable
+    - transactions
+spec:
+  type: database
+  owner: accounts-team
+  system: open-banking-api-hub
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: payment-events-topic
+  description: Pub/Sub topic for payment-related events and notifications
+  tags:
+    - messaging
+    - pubsub
+    - payments
+spec:
+  type: messaging
+  owner: payments-team
+  system: sepa-ach-payment-gateway
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: consent-store
+  description: Secure database for storing user consent records
+  tags:
+    - database
+    - security
+    - consent
+spec:
+  type: database
+  owner: security-team
+  system: consent-management-service
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: api-cdn
+  description: CDN for serving API documentation and static assets
+  tags:
+    - cdn
+    - documentation
+spec:
+  type: cdn
+  owner: customer-experience-team
+  system: open-banking-api-hub
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: audit-logs-bucket
+  description: S3 bucket for storing audit logs and compliance records
+  tags:
+    - storage
+    - s3
+    - compliance
+spec:
+  type: storage
+  owner: compliance-team
+  system: open-banking-api-hub 

@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: webhook-notifications-api
+  description: API to set up webhook notifications for payment and transaction events
+  tags:
+    - notifications
+    - real-time
+spec:
+  type: openapi
+  lifecycle: production
+  owner: event-team
+  definition:
+    $text: https://github.com/rhdh-demo-gh/ob-demo/blob/main/specs/webhooks.spec.yaml

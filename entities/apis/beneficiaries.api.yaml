@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: beneficiary-management-api
+  description: API for managing trusted payees and beneficiaries
+  tags:
+    - payments
+    - beneficiaries
+spec:
+  type: openapi
+  lifecycle: production
+  owner: payments-team
+  definition:
+    $text: https://github.com/rhdh-demo-gh/ob-demo/blob/main/specs/beneficiaries.spec.yaml

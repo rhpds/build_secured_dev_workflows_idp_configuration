@@ -1,0 +1,7 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: open-banking-components
+spec:
+  type: url
+  target: ./components/**/*.yaml

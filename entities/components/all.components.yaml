@@ -1,0 +1,150 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: account-access-api
+  description: API that provides authorized third-party providers access to customer account information.
+  tags:
+    - ais
+    - accounts
+    - banking
+    - fdx
+spec:
+  type: service
+  lifecycle: production
+  owner: security-team
+  system: open-banking-api-hub
+  dependsOn:
+    - component:default/consent-management-api
+    - component:default/beneficiary-management-api
+  providesApis:
+    - default/account-access-api
+  consumesApis:
+    - default/consent-management-api
+    - default/beneficiary-management-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: payment-initiation-api
+  description: API for initiating payments from customer accounts, supporting SEPA credit transfers.
+spec:
+  type: service
+  lifecycle: production
+  owner: payments-team
+  system: sepa-ach-payment-gateway
+  dependsOn:
+    - component:default/consent-management-api
+    - resource:default/payment-events-topic
+    - resource:default/audit-logs-bucket
+  providesApis:
+    - default/payment-initiation-api
+  consumesApis:
+    - default/consent-management-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: consent-management-api
+  description: API for managing user consents under open banking regulations.
+spec:
+  type: service
+  lifecycle: production
+  owner: security-team
+  system: consent-management-service
+  dependsOn:
+    - resource:default/consent-store
+    - resource:default/audit-logs-bucket
+  providesApis:
+    - default/consent-management-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: webhook-notifications-api
+  description: API for managing webhook subscriptions for event notifications.
+spec:
+  type: service
+  lifecycle: production
+  owner: event-team
+  system: instant-payments-engine
+  providesApis:
+    - default/webhook-notifications-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: beneficiary-management-api
+  description: API for managing trusted payees and beneficiaries.
+spec:
+  type: service
+  lifecycle: production
+  owner: payments-team
+  system: customer-account-management
+  dependsOn:
+    - component:default/consent-management-api
+  providesApis:
+    - default/beneficiary-management-api
+  consumesApis:
+    - default/consent-management-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: transaction-history-api
+  description: API for retrieving and filtering customer transaction history and statements.
+  tags:
+    - ais
+    - accounts
+    - banking
+    - fdx
+spec:
+  type: service
+  lifecycle: production
+  owner: accounts-team
+  system: open-banking-api-hub
+  dependsOn:
+    - component:default/consent-management-api
+    - component:default/beneficiary-management-api
+    - resource:default/transaction-store
+    - resource:default/audit-logs-bucket
+  providesApis:
+    - default/transaction-history-api
+  consumesApis:
+    - default/consent-management-api
+    - default/beneficiary-management-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: balance-check-api
+  description: API for real-time account balance inquiries and balance history.
+spec:
+  type: service
+  lifecycle: production
+  owner: accounts-team
+  system: customer-account-management
+  dependsOn:
+    - component:default/consent-management-api
+  providesApis:
+    - default/balance-check-api
+  consumesApis:
+    - default/consent-management-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: standing-orders-api
+  description: API for managing recurring payments and standing orders.
+spec:
+  type: service
+  lifecycle: production
+  owner: payments-team
+  system: sepa-ach-payment-gateway
+  dependsOn:
+    - component:default/consent-management-api
+    - component:default/beneficiary-management-api
+  providesApis:
+    - default/standing-orders-api
+  consumesApis:
+    - default/consent-management-api
+    - default/beneficiary-management-api

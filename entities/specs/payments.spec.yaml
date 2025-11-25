@@ -1,0 +1,114 @@
+openapi: 3.1.0
+info:
+  title: Payment Initiation API
+  description: API for initiating payments from customer accounts under open banking regulations.
+  version: 1.0.0
+
+servers:
+  - url: https://api.acme.example.com/v1
+    description: Production Server
+  - url: https://sandbox.acme.example.com/v1
+    description: Sandbox Server
+
+paths:
+  /payments:
+    post:
+      summary: Initiate a payment
+      description: Initiate a SEPA Credit Transfer or other payment from a customer account.
+      operationId: initiatePayment
+      security:
+        - OAuth2: [payments:initiate]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '201':
+          description: Payment successfully initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+
+  /payments/{paymentId}:
+    get:
+      summary: Get payment status
+      description: Retrieve the status of a previously initiated payment.
+      operationId: getPaymentStatus
+      security:
+        - OAuth2: [payments:read]
+      parameters:
+        - name: paymentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment status retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatus'
+        '401':
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.acme.example.com/oauth2/authorize
+          tokenUrl: https://auth.acme.example.com/oauth2/token
+          scopes:
+            payments:initiate: Initiate a payment
+            payments:read: Read payment status
+
+  schemas:
+    PaymentRequest:
+      type: object
+      properties:
+        debtorAccount:
+          type: object
+          properties:
+            iban:
+              type: string
+            currency:
+              type: string
+        creditorAccount:
+          type: object
+          properties:
+            iban:
+              type: string
+            name:
+              type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        reference:
+          type: string
+        paymentMethod:
+          type: string
+          enum: [SEPA_CREDIT_TRANSFER]
+    PaymentResponse:
+      type: object
+      properties:
+        paymentId:
+          type: string
+        status:
+          type: string
+    PaymentStatus:
+      type: object
+      properties:
+        paymentId:
+          type: string
+        status:
+          type: string

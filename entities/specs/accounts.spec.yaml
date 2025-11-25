@@ -1,0 +1,178 @@
+openapi: 3.1.0
+info:
+  title: Account Access API
+  description: API for authorized third-party providers (TPPs) to access account information under open banking regulations.
+  version: 1.0.0
+
+servers:
+  - url: https://api.acme.example.com/v1
+    description: Production Server
+  - url: https://sandbox.acme.example.com/v1
+    description: Sandbox Server
+
+paths:
+  /consents:
+    post:
+      summary: Create a consent request
+      description: Initiate a consent request to access customer account data.
+      operationId: createConsent
+      security:
+        - OAuth2: [consent:create]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsentRequest'
+      responses:
+        '201':
+          description: Consent successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+
+  /accounts:
+    get:
+      summary: Get account list
+      description: Retrieve a list of accounts authorized by the user.
+      operationId: getAccounts
+      security:
+        - OAuth2: [accounts:read]
+      responses:
+        '200':
+          description: List of accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        '401':
+          description: Unauthorized
+
+  /accounts/{accountId}/balances:
+    get:
+      summary: Get account balances
+      description: Retrieve balance details for a specific account.
+      operationId: getAccountBalances
+      security:
+        - OAuth2: [balances:read]
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Account balances retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Balance'
+        '401':
+          description: Unauthorized
+
+  /accounts/{accountId}/transactions:
+    get:
+      summary: Get account transactions
+      description: Retrieve transaction history for a specific account.
+      operationId: getAccountTransactions
+      security:
+        - OAuth2: [transactions:read]
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: fromDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: toDate
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Account transactions retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+        '401':
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.acme.example.com/oauth2/authorize
+          tokenUrl: https://auth.acme.example.com/oauth2/token
+          scopes:
+            consent:create: Create user consent
+            accounts:read: Read user accounts
+            balances:read: Read account balances
+            transactions:read: Read account transactions
+
+  schemas:
+    ConsentRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    ConsentResponse:
+      type: object
+      properties:
+        consentId:
+          type: string
+        status:
+          type: string
+    Account:
+      type: object
+      properties:
+        accountId:
+          type: string
+        accountType:
+          type: string
+        currency:
+          type: string
+    Balance:
+      type: object
+      properties:
+        accountId:
+          type: string
+        balance:
+          type: number
+        currency:
+          type: string
+    Transaction:
+      type: object
+      properties:
+        transactionId:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        date:
+          type: string
+          format: date
+        description:
+          type: string

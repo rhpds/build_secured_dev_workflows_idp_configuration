@@ -1,0 +1,44 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: kingston
+spec:
+  profile:
+    displayName: Kingston
+    email: kingston@acme.com
+    picture: https://api.dicebear.com/9.x/adventurer/svg?seed=Kingston
+  memberOf: [open-banking-team]
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: sarah
+spec:
+  profile:
+    displayName: Sarah
+    email: sarah@acme.com
+    picture: https://api.dicebear.com/9.x/adventurer/svg?seed=Sarah
+  memberOf: [open-banking-team, payments-team]
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: katherine
+spec:
+  profile:
+    displayName: Katherine
+    email: katherine@acme.com
+    picture: https://api.dicebear.com/9.x/adventurer/svg?seed=Katherine
+  memberOf: [open-banking-team, event-team]
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: emery
+spec:
+  profile:
+    displayName: Emery
+    email: emery@acme.com
+    picture: https://api.dicebear.com/9.x/adventurer/svg?seed=Emery
+  memberOf: [security-team]

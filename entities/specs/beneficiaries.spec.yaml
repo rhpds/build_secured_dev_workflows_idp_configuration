@@ -1,0 +1,119 @@
+openapi: 3.1.0
+info:
+  title: Beneficiary Management API
+  description: API for managing trusted payees and beneficiaries.
+  version: 1.0.0
+
+servers:
+  - url: https://api.acme.example.com/v1
+    description: Production Server
+  - url: https://sandbox.acme.example.com/v1
+    description: Sandbox Server
+
+paths:
+  /beneficiaries:
+    get:
+      summary: Get list of beneficiaries
+      description: Retrieve a list of trusted payees and beneficiaries.
+      operationId: getBeneficiaries
+      security:
+        - OAuth2: [beneficiaries:read]
+      responses:
+        '200':
+          description: List of beneficiaries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Beneficiary'
+        '401':
+          description: Unauthorized
+
+    post:
+      summary: Add a new beneficiary
+      description: Register a new trusted payee or beneficiary.
+      operationId: addBeneficiary
+      security:
+        - OAuth2: [beneficiaries:manage]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BeneficiaryRequest'
+      responses:
+        '201':
+          description: Beneficiary successfully added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeneficiaryResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+
+  /beneficiaries/{beneficiaryId}:
+    delete:
+      summary: Remove a beneficiary
+      description: Remove a trusted payee or beneficiary from the list.
+      operationId: removeBeneficiary
+      security:
+        - OAuth2: [beneficiaries:manage]
+      parameters:
+        - name: beneficiaryId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Beneficiary successfully removed
+        '401':
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.acme.example.com/oauth2/authorize
+          tokenUrl: https://auth.acme.example.com/oauth2/token
+          scopes:
+            beneficiaries:read: Read list of beneficiaries
+            beneficiaries:manage: Manage beneficiaries
+
+  schemas:
+    Beneficiary:
+      type: object
+      properties:
+        beneficiaryId:
+          type: string
+        name:
+          type: string
+        accountNumber:
+          type: string
+        iban:
+          type: string
+        currency:
+          type: string
+    BeneficiaryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        accountNumber:
+          type: string
+        iban:
+          type: string
+        currency:
+          type: string
+    BeneficiaryResponse:
+      type: object
+      properties:
+        beneficiaryId:
+          type: string
+        status:
+          type: string

@@ -1,0 +1,88 @@
+openapi: 3.1.0
+info:
+  title: Webhook Notifications API
+  description: API for managing webhook subscriptions for event notifications.
+  version: 1.0.0
+
+servers:
+  - url: https://api.acme.example.com/v1
+    description: Production Server
+  - url: https://sandbox.acme.example.com/v1
+    description: Sandbox Server
+
+paths:
+  /webhooks:
+    post:
+      summary: Register a webhook
+      description: Register a webhook URL to receive event notifications.
+      operationId: registerWebhook
+      security:
+        - OAuth2: [webhooks:manage]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookRegistrationRequest'
+      responses:
+        '201':
+          description: Webhook successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+
+  /webhooks/{webhookId}:
+    delete:
+      summary: Unregister a webhook
+      description: Remove a previously registered webhook.
+      operationId: unregisterWebhook
+      security:
+        - OAuth2: [webhooks:manage]
+      parameters:
+        - name: webhookId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Webhook successfully unregistered
+        '401':
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.acme.example.com/oauth2/authorize
+          tokenUrl: https://auth.acme.example.com/oauth2/token
+          scopes:
+            webhooks:manage: Manage webhook subscriptions
+
+  schemas:
+    WebhookRegistrationRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+        eventTypes:
+          type: array
+          items:
+            type: string
+        secret:
+          type: string
+    WebhookResponse:
+      type: object
+      properties:
+        webhookId:
+          type: string
+        status:
+          type: string

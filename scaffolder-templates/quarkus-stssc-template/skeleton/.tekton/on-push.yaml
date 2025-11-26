@@ -25,7 +25,7 @@ spec:
     - name: component-name
       value: ${{values.name}}
     - name: dockerfile
-      value: ./Dockerfile
+      value: ./src/main/docker/Dockerfile.jvm
     - name: git-url
       value: '{{repo_url}}'
     - name: image-expires-after

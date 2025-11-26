@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: open-banking-entities
+spec:
+  targets: 
+    - ./locations.domains-systems.yaml
+    - ./locations.resources.yaml
+    - ./locations.groups.yaml
+    - ./locations.users.yaml
+    - ./locations.components.yaml
+    - ./locations.apis.yaml

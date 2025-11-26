@@ -7,4 +7,4 @@ spec:
   type: url
   targets:
     - ./component-rhpds.yaml
-    - ./catalogs.yaml
+    - ./entities/locations.yaml

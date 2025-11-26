@@ -44,10 +44,13 @@ spec:
             cpu: "1"
             memory: 512Mi
           requests:
-            cpu: 10m
-            memory: 50Mi    
+            cpu: 100m
+            memory: 128Mi    
         env:
         - name: GIT_REPO
           value: ${{ values.repoURL }}
+        envFrom:
+        - secretRef:
+            name: ${{ values.name }}-litellm-secret
       imagePullSecrets:
         - name: tssc-image-registry-auth

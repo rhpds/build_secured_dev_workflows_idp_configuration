@@ -1,0 +1,116 @@
+openapi: 3.1.0
+info:
+  title: Consent Management API
+  description: API for managing user consents under open banking regulations.
+  version: 1.0.0
+
+servers:
+  - url: https://api.acme.example.com/v1
+    description: Production Server
+  - url: https://sandbox.acme.example.com/v1
+    description: Sandbox Server
+
+paths:
+  /consents:
+    post:
+      summary: Create a consent request
+      description: Initiate a consent request to access customer account data.
+      operationId: createConsent
+      security:
+        - OAuth2: [consent:create]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsentRequest'
+      responses:
+        '201':
+          description: Consent successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+
+  /consents/{consentId}:
+    get:
+      summary: Get consent status
+      description: Retrieve the status of a previously granted consent.
+      operationId: getConsentStatus
+      security:
+        - OAuth2: [consent:read]
+      parameters:
+        - name: consentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Consent status retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentStatus'
+        '401':
+          description: Unauthorized
+
+    delete:
+      summary: Revoke consent
+      description: Revoke a previously granted consent.
+      operationId: revokeConsent
+      security:
+        - OAuth2: [consent:delete]
+      parameters:
+        - name: consentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Consent successfully revoked
+        '401':
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.acme.example.com/oauth2/authorize
+          tokenUrl: https://auth.acme.example.com/oauth2/token
+          scopes:
+            consent:create: Create user consent
+            consent:read: Read consent status
+            consent:delete: Revoke consent
+
+  schemas:
+    ConsentRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    ConsentResponse:
+      type: object
+      properties:
+        consentId:
+          type: string
+        status:
+          type: string
+    ConsentStatus:
+      type: object
+      properties:
+        consentId:
+          type: string
+        status:
+          type: string

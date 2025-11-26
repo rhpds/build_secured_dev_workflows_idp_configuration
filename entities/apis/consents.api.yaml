@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: consent-management-api
+  description: API to manage user consent for data access
+  tags:
+    - consent
+    - authentication
+spec:
+  type: openapi
+  lifecycle: production
+  owner: security-team
+  definition:
+    $text: https://github.com/rhdh-demo-gh/ob-demo/blob/main/specs/consents.spec.yaml

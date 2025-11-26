@@ -1,0 +1,192 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: retail-banking
+  description: Services for individual consumers, such as savings, checking, and personal loans.
+spec:
+  owner: customer-experience-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: customer-account-management
+  description: Manages individual customer accounts, profiles, and preferences.
+spec:
+  owner: retail-banking
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: retail-loan-processing
+  description: Handles loan applications and approvals for retail customers.
+spec:
+  owner: retail-banking
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: personal-finance-management
+  description: Provides budgeting and financial tracking tools.
+spec:
+  owner: retail-banking
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: corporate-banking
+  description: Financial services for businesses, including credit lines, corporate accounts, and treasury management.
+spec:
+  owner: customer-experience-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: business-account-platform
+  description: Handles multi-account business banking and treasury management.
+spec:
+  owner: corporate-banking
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: corporate-credit-management
+  description: Manages credit facilities and loans for businesses.
+spec:
+  owner: corporate-banking
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: corporate-payments-platform
+  description: Facilitates large-scale B2B payments and wire transfers.
+spec:
+  owner: corporate-banking
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: payments-transfers
+  description: Handles real-time payments, wire transfers, direct debits, SEPA payments, and ACH transactions.
+spec:
+  owner: payments-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: sepa-ach-payment-gateway
+  description: Facilitates real-time and batch payment processing.
+spec:
+  owner: payments-transfers
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: instant-payments-engine
+  description: Real-time payments and peer-to-peer transfers.
+spec:
+  owner: payments-transfers
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: cross-border-payments
+  description: Supports international remittances and FX transfers.
+spec:
+  owner: payments-transfers
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: open-banking-team
+  description: API platform for third-party banking services under PSD2, FDX, and CFPB 1033 compliance.
+spec:
+  owner: open-banking-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: open-banking-api-hub
+  description: API gateway for third-party integrations.
+spec:
+  owner: open-banking-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: consent-management-service
+  description: Manages customer consents for data sharing.
+spec:
+  owner: open-banking-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: third-party-payment-processor
+  description: Enables third-party providers to initiate payments.
+spec:
+  owner: open-banking-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: risk-compliance
+  description: Covers fraud detection, KYC, AML, and regulatory reporting.
+spec:
+  owner: open-banking-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: aml-kyc-engine
+  description: Automates customer identity verification and fraud detection.
+spec:
+  owner: risk-compliance
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: transaction-monitoring-system
+  description: Analyzes transactions for suspicious activity.
+spec:
+  owner: risk-compliance
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: regulatory-reporting-tool
+  description: Generates compliance reports for financial regulators.
+spec:
+  owner: risk-compliance
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: core-banking-ledger
+  description: The backbone of banking, handling account balances, transactions, and settlements.
+spec:
+  owner: open-banking-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: general-ledger
+  description: The financial system of record for all transactions.
+spec:
+  owner: core-banking-ledger
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: core-banking-transaction-engine
+  description: Processes all financial transactions within the bank.
+spec:
+  owner: core-banking-ledger
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: reconciliation-system
+  description: Ensures consistency across financial transactions and ledgers.
+spec:
+  owner: core-banking-ledger

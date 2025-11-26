@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: standing-orders-api
+  description: API for managing recurring payments and standing orders
+spec:
+  type: openapi
+  lifecycle: production
+  owner: payments-team
+  definition:
+    $text: https://github.com/rhdh-demo-gh/ob-demo/blob/main/specs/standing-orders.spec.yaml 

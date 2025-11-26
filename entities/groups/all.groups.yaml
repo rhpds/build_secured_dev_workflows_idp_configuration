@@ -1,0 +1,97 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: open-banking-team
+  description: Top-level team in Open Banking Group/Org
+spec:
+  type: team
+  profile:
+    displayName: Open Banking Team
+    email: open-banking-team@acme.com
+    picture: https://api.dicebear.com/9.x/bottts/svg?seed=Leo
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: event-team
+  description: Owns event systems and webhooks
+spec:
+  type: team
+  profile:
+    displayName: Event Team
+    email: event-team@acme.com
+    picture: https://api.dicebear.com/9.x/bottts/svg?seed=Sadie
+  parent: open-banking-team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: payments-team
+  description: Owns payment systems
+spec:
+  type: team
+  profile:
+    displayName: Payments Team
+    email: payments-team@acme.com
+    picture: https://api.dicebear.com/9.x/bottts/svg?seed=Robert
+  parent: open-banking-team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: security-team
+  description: Responsible for all things SecOps
+spec:
+  type: team
+  profile:
+    displayName: Security Team
+    email: security-team@acme.com
+    picture: https://api.dicebear.com/9.x/bottts/svg?seed=Andrea
+  parent: open-banking-team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: accounts-team
+  description: Manages account-related services and data
+spec:
+  type: team
+  profile:
+    displayName: Accounts Team
+    email: accounts-team@acme.com
+    picture: https://api.dicebear.com/9.x/bottts/svg?seed=Max
+  parent: open-banking-team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: compliance-team
+  description: Ensures regulatory compliance and audit requirements
+spec:
+  type: team
+  profile:
+    displayName: Compliance Team
+    email: compliance-team@acme.com
+    picture: https://api.dicebear.com/9.x/bottts/svg?seed=Sam
+  parent: security-team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: customer-experience-team
+  description: Focuses on customer-facing features and user experience
+spec:
+  type: team
+  profile:
+    displayName: Customer Experience Team
+    email: customer-experience@acme.com
+    picture: https://api.dicebear.com/9.x/bottts/svg?seed=Zoe
+  parent: accounts-team
+  children: []

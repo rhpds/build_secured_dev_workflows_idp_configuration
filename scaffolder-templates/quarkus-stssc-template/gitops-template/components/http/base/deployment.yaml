@@ -49,5 +49,8 @@ spec:
         env:
         - name: GIT_REPO
           value: ${{ values.repoURL }}
+        envFrom:
+        - secretRef:
+            name: ${{ values.name }}-litellm-secret
       imagePullSecrets:
         - name: tssc-image-registry-auth

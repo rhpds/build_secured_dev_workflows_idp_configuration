@@ -62,7 +62,7 @@ spec:
           description: Name of the Quay Organization
           default: tssc
           ui:readonly: true
-    - title: Application repository Information
+    - title: Application Repository Information
       required:
         - repoHost
         - repoOwner
@@ -71,9 +71,9 @@ spec:
         repoHost:
           title: Source Repo
           type: string
-          default: Gitlab
+          default: GitLab
           enum:
-            - Gitlab
+            - GitLab
         repoOwner:
           title: Repo Owner
           type: string

@@ -84,8 +84,9 @@ ENV LANGUAGE='en_US:en'
 
 COPY target/lib/* /deployments/lib/
 COPY target/*-runner.jar /deployments/quarkus-run.jar
-# Note: Resources from src/main/resources/ (including catalog/) are automatically
-# packaged into the JAR and accessible via classpath
+
+# Copy the catalog directory to the filesystem for EasyRag (from compiled resources)
+COPY target/classes/catalog/ /deployments/catalog/
 
 EXPOSE 8080
 USER 185

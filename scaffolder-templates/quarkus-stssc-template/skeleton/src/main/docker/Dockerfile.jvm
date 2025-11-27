@@ -87,8 +87,9 @@ COPY --chown=185 target/quarkus-app/lib/ /deployments/lib/
 COPY --chown=185 target/quarkus-app/*.jar /deployments/
 COPY --chown=185 target/quarkus-app/app/ /deployments/app/
 COPY --chown=185 target/quarkus-app/quarkus/ /deployments/quarkus/
-# Note: Resources from src/main/resources/ (including catalog/) are automatically
-# packaged into the app/ directory and accessible via classpath
+
+# Copy the catalog directory to the filesystem for EasyRag (from compiled resources)
+COPY --chown=185 target/classes/catalog/ /deployments/catalog/
 
 EXPOSE 8080
 USER 185
